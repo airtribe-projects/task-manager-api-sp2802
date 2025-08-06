@@ -7,7 +7,7 @@ const getAllTasks = async (req, res) => {
 };
 
 const getTaskById = async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = Number(req.params.id);
   const task = await taskModel.getTaskById(id);
   if (!task) return res.status(404).json({ error: 'Task not found.' });
   res.json(task);
@@ -26,7 +26,7 @@ const createTask = async (req, res) => {
 };
 
 const updateTask = async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = Number(req.params.id);
   const task = await taskModel.getTaskById(id);
   if (!task) return res.status(404).json({ error: 'Task not found.' });
 
@@ -41,7 +41,7 @@ const updateTask = async (req, res) => {
 };
 
 const deleteTask = async (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = Number(req.params.id);
   const deleted = await taskModel.deleteTask(id);
   if (!deleted) return res.status(404).json({ error: 'Task not found.' });
   res.json({ message: 'Task deleted.', task: deleted });
