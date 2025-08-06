@@ -1,5 +1,5 @@
 function validateCreate(req, res, next) {
-  const { title, description, completed } = req.body;
+  const { title, description, completed, priority } = req.body;
   const errors = [];
 
   if (!title || typeof title !== 'string' || title.trim() === '') {
@@ -14,13 +14,17 @@ function validateCreate(req, res, next) {
     errors.push('Completed must be a boolean value.');
   }
 
+  if (!['low', 'medium', 'high'].includes(priority?.toLowerCase())) {
+    errors.push('Priority must be one of: low, medium, high.');
+  }
+
   if (errors.length) return res.status(400).json({ errors });
 
   next();
 }
 
 function validateUpdate(req, res, next) {
-  const { title, description, completed } = req.body;
+  const { title, description, completed, priority } = req.body;
   const errors = [];
 
   if (title !== undefined && (typeof title !== 'string' || title.trim() === '')) {
@@ -33,6 +37,10 @@ function validateUpdate(req, res, next) {
 
   if (completed !== undefined && typeof completed !== 'boolean') {
     errors.push('Completed must be a boolean value if provided.');
+  }
+
+  if (priority !== undefined && !['low', 'medium', 'high'].includes(priority?.toLowerCase())) {
+    errors.push('Priority must be one of: low, medium, high if provided.');
   }
 
   if (errors.length) return res.status(400).json({ errors });
