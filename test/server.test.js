@@ -1,6 +1,10 @@
 const tap = require("tap");
 const supertest = require("supertest");
-const app = require("../app");
+const app = require("../server");
+const taskRoutes = require("../src/routes/taskRoutes");
+
+app.use("/tasks", taskRoutes);
+
 const server = supertest(app);
 
 tap.test("POST /tasks", async (t) => {
@@ -37,11 +41,24 @@ tap.test("GET /tasks", async (t) => {
   t.end();
 });
 
+//Adding new task item so i have pattern matching data for the testcase "GET /tasks/:id"
+tap.test("POST /tasks", async (t) => {
+  const newTask = {
+    title: "Set up environment",
+    description: "Install Node.js, npm, and git",
+    completed: true,
+  };
+  const response = await server.post("/tasks").send(newTask);
+  t.equal(response.status, 201);
+  t.end();
+});
+
 tap.test("GET /tasks/:id", async (t) => {
-  const response = await server.get("/tasks/1");
+  //changing get id to 2 because i have added this item using POST at the second position in tasks so id would be 2
+  const response = await server.get("/tasks/2");
   t.equal(response.status, 200);
   const expectedTask = {
-    id: 1,
+    id: 2,
     title: "Set up environment",
     description: "Install Node.js, npm, and git",
     completed: true,

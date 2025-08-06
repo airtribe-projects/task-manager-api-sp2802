@@ -1,7 +1,7 @@
 let tasks = [];
 let nextId = 1;
 
-function getAllTasks({ completed, sort }) {
+const getAllTasks = async ({ completed, sort }) => {
   let result = [...tasks];
 
   if (completed !== undefined) {
@@ -16,13 +16,13 @@ function getAllTasks({ completed, sort }) {
   }
 
   return result;
-}
+};
 
-function getTaskById(id) {
+const getTaskById = async (id) => {
   return tasks.find(task => task.id === id);
-}
+};
 
-function createTask(data) {
+const createTask = async (data) => {
   const newTask = {
     id: nextId++,
     title: data.title,
@@ -33,28 +33,24 @@ function createTask(data) {
   };
   tasks.push(newTask);
   return newTask;
-}
+};
 
-function updateTask(id, updates) {
+const updateTask = async (id, updates) => {
   const index = tasks.findIndex(t => t.id === id);
   if (index === -1) return null;
-
-  tasks[index] = {
-    ...tasks[index],
-    ...updates
-  };
+  tasks[index] = { ...tasks[index], ...updates };
   return tasks[index];
-}
+};
 
-function deleteTask(id) {
+const deleteTask = async (id) => {
   const index = tasks.findIndex(t => t.id === id);
   if (index === -1) return null;
   return tasks.splice(index, 1)[0];
-}
+};
 
-function getTasksByPriority(priority) {
+const getTasksByPriority = async (priority) => {
   return tasks.filter(task => task.priority === priority.toLowerCase());
-}
+};
 
 module.exports = {
   getAllTasks,

@@ -14,8 +14,8 @@ function validateCreate(req, res, next) {
     errors.push('Completed must be a boolean value.');
   }
 
-  if (!['low', 'medium', 'high'].includes(priority?.toLowerCase())) {
-    errors.push('Priority must be one of: low, medium, high.');
+  if (priority !== undefined && !['low', 'medium', 'high'].includes(priority?.toLowerCase())) {
+    errors.push('Priority must be one of: low, medium, high if provided.');
   }
 
   if (errors.length) return res.status(400).json({ errors });
@@ -39,7 +39,7 @@ function validateUpdate(req, res, next) {
     errors.push('Completed must be a boolean value if provided.');
   }
 
-  if (priority !== undefined && !['low', 'medium', 'high'].includes(priority?.toLowerCase())) {
+  if (priority !== undefined && !['low', 'medium', 'high'].includes(priority.toLowerCase())) {
     errors.push('Priority must be one of: low, medium, high if provided.');
   }
 
